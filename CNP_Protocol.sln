@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{DAF1C0B2-384D-4942-A6D8-97C33F4264AC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{A65D3402-9B37-4A93-B9F1-20CB82ECAFA3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B3BB433C-1688-46E3-A48C-8778FA3EEC1B}"
+	ProjectSection(SolutionItems) = preProject
+		Doxyfile.dxg = Doxyfile.dxg
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAF1C0B2-384D-4942-A6D8-97C33F4264AC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DAF1C0B2-384D-4942-A6D8-97C33F4264AC}.Debug|Win32.Build.0 = Debug|Win32
+		{DAF1C0B2-384D-4942-A6D8-97C33F4264AC}.Release|Win32.ActiveCfg = Release|Win32
+		{DAF1C0B2-384D-4942-A6D8-97C33F4264AC}.Release|Win32.Build.0 = Release|Win32
+		{A65D3402-9B37-4A93-B9F1-20CB82ECAFA3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A65D3402-9B37-4A93-B9F1-20CB82ECAFA3}.Debug|Win32.Build.0 = Debug|Win32
+		{A65D3402-9B37-4A93-B9F1-20CB82ECAFA3}.Release|Win32.ActiveCfg = Release|Win32
+		{A65D3402-9B37-4A93-B9F1-20CB82ECAFA3}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF51D29F-9675-4AC0-82E0-0EA1553F970F}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://ualr-projects.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Client\\Client.vcxproj
+		SccProjectName1 = Client
+		SccLocalPath1 = Client
+		SccProjectUniqueName2 = Server\\Server.vcxproj
+		SccProjectName2 = Server
+		SccLocalPath2 = Server
+	EndGlobalSection
+EndGlobal
