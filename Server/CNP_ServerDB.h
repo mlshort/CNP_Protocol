@@ -156,7 +156,7 @@ typedef std::map<TRANSACTION_INFO::key_type, TRANSACTION_INFO> TransactionMap_t;
 
     @retval cnp::QWORD containing unique 64bit customer ID
 */
-cnp::QWORD GenerateCustomerID(const char* szFirstName, size_t cbLen, cnp::WORD wPIN);
+cnp::QWORD GenerateCustomerID(const char* szFirstName, size_t cbLen, cnp::WORD wPIN) noexcept;
 
 /**
    Loads into runtime memory the server database records from the persisted store

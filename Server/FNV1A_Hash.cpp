@@ -15,7 +15,7 @@
 typedef unsigned short WORD;
 typedef unsigned long  DWORD;
 
-size_t FNV1A_Hash(const char* pKey, size_t cbLen)
+size_t FNV1A_Hash(const char* pKey, size_t cbLen) noexcept
 {
     const char* pKeyLoc  = pKey;
     DWORD  dwHash        = 2166136261;

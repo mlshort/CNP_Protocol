@@ -24,7 +24,7 @@ AccountMap_t                 g_AccountInfo;
 TransactionMap_t             g_TransactionInfo;
 
 
-cnp::QWORD GenerateCustomerID(const char* szFirstName, size_t cbLen, cnp::WORD wPIN)
+cnp::QWORD GenerateCustomerID(const char* szFirstName, size_t cbLen, cnp::WORD wPIN) noexcept
 {
     cnp::QWORD qwResult   = INVALID_CUSTOMER_ID;
 

@@ -260,7 +260,7 @@ enum CER_TYPE
 };
 
 
-inline bool Succeeded(cnp::CER_TYPE cerRR) noexcept
+constexpr bool Succeeded(cnp::CER_TYPE cerRR) noexcept
 { return (cerRR == cnp::CER_SUCCESS); };
 
 
@@ -363,7 +363,7 @@ struct _CONNECT_REQUEST
     DWORD        m_dwValidationKey;  ///< Used by Server to authenticate the connection
 
     /// Default constructor
-    constexpr _CONNECT_REQUEST()
+    constexpr _CONNECT_REQUEST() noexcept
         : m_wMajorVersion(0),
           m_wMinorVersion(0),
           m_dwValidationKey(0)
@@ -433,7 +433,7 @@ struct _CREATE_ACCOUNT_REQUEST
     DWORD        m_dwDLNumber;                  ///< (optional) User's Drivers License Number
 
     /// Default constructor
-    _CREATE_ACCOUNT_REQUEST()
+    _CREATE_ACCOUNT_REQUEST() noexcept
         : m_szFirstName{0},
           m_szLastName{0},
           m_szEmailAddress{0},

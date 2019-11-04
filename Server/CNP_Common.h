@@ -25,11 +25,11 @@ const cnp::WORD  g_wServerMajorVersion   = 1;
 const cnp::WORD  g_wServerMinorVersion   = 1;
 
 /// Validation helper function
-inline bool IsValidCustomerID(const cnp::QWORD& qwID) noexcept
+constexpr bool IsValidCustomerID(const cnp::QWORD& qwID) noexcept
 { return (qwID != INVALID_CUSTOMER_ID); };
 
 /// Validation helper function
-inline bool IsValidPIN(cnp::WORD wPIN) noexcept
+constexpr bool IsValidPIN(cnp::WORD wPIN) noexcept
 { return (wPIN != cnp::INVALID_PIN); };
 
 /// Validation helper function

@@ -43,7 +43,7 @@ pid_t gettid( void )
 
 #elif _MSC_VER
 
-DWORD gettid( void )
+DWORD gettid( void ) noexcept
 {
     return ::GetCurrentThreadId();
 };
@@ -59,7 +59,7 @@ struct THREAD_INFO
     CNP_Socket*          m_pSocket;
     std::thread*         m_pThread;
 
-    THREAD_INFO(void)
+    THREAD_INFO(void) noexcept
         : m_bTerminate(false),
           m_pSocket(nullptr),
           m_pThread(nullptr)
@@ -168,13 +168,13 @@ void ClientThreadHandler(void* pData)
     std::cout << "Exiting ThreadID:" << gettid() << std::endl;
 };
 
-void TerminateHandler(int /*iSignal*/)
+void TerminateHandler(int /*iSignal*/) noexcept
 {
     g_bTerminate = true;
 }
 
 #ifdef _MSC_VER
-BOOL CtrlHandler( DWORD fdwCtrlType ) 
+BOOL CtrlHandler( DWORD fdwCtrlType ) noexcept
 { 
   switch( fdwCtrlType ) 
   { 

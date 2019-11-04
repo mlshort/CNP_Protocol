@@ -30,6 +30,6 @@
 
     @retval size_t   containing results of hash
  */
-size_t FNV1A_Hash(const char* pKey, size_t cbLen);
+size_t FNV1A_Hash(const char* pKey, size_t cbLen) noexcept;
 
 #endif

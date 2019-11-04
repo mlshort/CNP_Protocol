@@ -19,7 +19,7 @@
     // Link with ws2_32.lib
     #pragma comment(lib, "Ws2_32.lib")
 
-    inline int CNP_GetLastError(void)
+    inline int CNP_GetLastError(void) noexcept
     { return ::WSAGetLastError(); };
 
 #elif __linux__
@@ -48,7 +48,7 @@ void closesocket(SOCKET socket)
 };
 #endif
 
-CNP_Socket::CNP_Socket(void)
+CNP_Socket::CNP_Socket(void) noexcept
     : m_hSocket(INVALID_SOCKET),
       m_wPort (0),
       m_iError(0)
@@ -57,7 +57,7 @@ CNP_Socket::CNP_Socket(void)
     memset(&m_RemoteAddr, 0, sizeof(m_RemoteAddr));
 };
 
-CNP_Socket::CNP_Socket(SOCKET hSocket, const sockaddr_in& remoteAddr)
+CNP_Socket::CNP_Socket(SOCKET hSocket, const sockaddr_in& remoteAddr) noexcept
     : m_hSocket(hSocket),
       m_wPort(0),
       m_iError(0)
@@ -179,7 +179,7 @@ bool CNP_Socket::Listen(int iBackLog)
     return bResult;
 };
 
-void CNP_Socket::Close(void)
+void CNP_Socket::Close(void) noexcept
 {
     if (m_hSocket != INVALID_SOCKET)
     {
@@ -278,7 +278,7 @@ int CNP_Socket::SetSocketSendTimeout(unsigned long ulMilliSecs)
 
 #endif
 
-bool CNP_Socket::Shutdown(int iHow)
+bool CNP_Socket::Shutdown(int iHow) noexcept
 {
     bool bResult = false;
 

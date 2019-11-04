@@ -25,7 +25,7 @@ char g_szBuffer[512] = { 0 };
         case cer: \
             return (const char*)#cer; 
 
-const char* CerTypeToString(cnp::CER_TYPE cerType)
+const char* CerTypeToString(cnp::CER_TYPE cerType) noexcept
 {
     using namespace cnp;
 
@@ -63,7 +63,7 @@ const char* CerTypeToString(cnp::CER_TYPE cerType)
     return "Unknown Error Type";
 }
 
-const char* TransTypeToString(cnp::TRANSACTION_TYPE tType)
+const char* TransTypeToString(cnp::TRANSACTION_TYPE tType) noexcept
 {
     switch (tType)
     {

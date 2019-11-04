@@ -48,7 +48,7 @@ public:
          
     Performs member data initialization to default values only
 */
-    CNP_Socket();
+    CNP_Socket() noexcept;
 
 /** 
     @brief Initialization Constructor
@@ -56,11 +56,11 @@ public:
     Performs member data initialization to default values,
     with the exception of the parameters
 */
-    CNP_Socket(SOCKET hSocket, const sockaddr_in& remoteAddr);
+    CNP_Socket(SOCKET hSocket, const sockaddr_in& remoteAddr) noexcept;
 
     ~CNP_Socket();
 
-    void Close(void);
+    void Close(void) noexcept;
 
     bool Create (unsigned short wPort);
     bool Connect(const char* szHostAddress, unsigned short wPort);
