@@ -200,7 +200,10 @@ bool ProcessCreateAccountRequest(const void* pMsg, size_t cbMsgLen)
         {
 // 3. Make sure the Name+PIN combo doesn't already exist
             cnp::QWORD qwCustomerID = GenerateCustomerID(szName, strlen(szName), wPIN);
-
+            
+// NOTE - (neither the const nor the non-const versions of 'find' modify the container).
+// No mapped values are accessed: concurrently accessing or modifying elements is safe.
+// @TODO - reader-writer lock would be more appropriate for this            
             auto itA = g_AccountInfo.find(qwCustomerID);
             if (itA != g_AccountInfo.end())
             {
@@ -270,6 +273,10 @@ bool ProcessLogonRequest(const void* pMsg, size_t cbMsgLen)
             cnp::QWORD qwCustomerID = GenerateCustomerID(szName, strlen(szName), wPIN);
 
 // 3. Make sure an account with the Name+PIN combo exists
+            
+// NOTE - (neither the const nor the non-const versions of 'find' modify the container).
+// No mapped values are accessed: concurrently accessing or modifying elements is safe.
+// @TODO - reader-writer lock would be more appropriate for this 
             auto itA = g_AccountInfo.find(qwCustomerID);
             if (itA != g_AccountInfo.end())
             {
@@ -380,6 +387,9 @@ bool ProcessDepositRequest(const void* pMsg, size_t cbMsgLen)
         cnp::QWORD qwCustomerID = itS->second.get_CustomerID();
         if (IsValidCustomerID(qwCustomerID))
         {
+// NOTE - (neither the const nor the non-const versions of 'find' modify the container).
+// No mapped values are accessed: concurrently accessing or modifying elements is safe.
+// @TODO - reader-writer lock would be more appropriate for this 
             auto itA = g_AccountInfo.find(qwCustomerID);
             if (itA != g_AccountInfo.end())
             {
@@ -451,6 +461,9 @@ bool ProcessWithdrawalRequest(const void* pMsg, size_t cbMsgLen)
         cnp::QWORD qwCustomerID = itS->second.get_CustomerID();
         if (IsValidCustomerID(qwCustomerID))
         {
+// NOTE - (neither the const nor the non-const versions of 'find' modify the container).
+// No mapped values are accessed: concurrently accessing or modifying elements is safe.
+// @TODO - reader-writer lock would be more appropriate for this 
             auto itA = g_AccountInfo.find(qwCustomerID);
             if (itA != g_AccountInfo.end())
             {
@@ -594,6 +607,9 @@ bool ProcessTransactionQueryRequest(const void* pMsg, size_t cbMsgLen)
         cnp::QWORD qwCustomerID = itS->second.get_CustomerID();
         if (IsValidCustomerID(qwCustomerID))
         {
+// NOTE - (neither the const nor the non-const versions of 'find' modify the container).
+// No mapped values are accessed: concurrently accessing or modifying elements is safe.
+// @TODO - reader-writer lock would be more appropriate for this 
             auto itA = g_AccountInfo.find(qwCustomerID);
             if (itA != g_AccountInfo.end())
             {
@@ -682,6 +698,9 @@ bool ProcessStampPurchaseRequest(const void* pMsg, size_t cbMsgLen)
         cnp::QWORD qwCustomerID = itS->second.get_CustomerID();
         if (IsValidCustomerID(qwCustomerID))
         {
+// NOTE - (neither the const nor the non-const versions of 'find' modify the container).
+// No mapped values are accessed: concurrently accessing or modifying elements is safe.
+// @TODO - reader-writer lock would be more appropriate for this 
             auto itA = g_AccountInfo.find(qwCustomerID);
             if (itA != g_AccountInfo.end())
             {
