@@ -1,4 +1,4 @@
-NAME:  CNP_Protocol Project
+# Computer Networks Protocol(CNP) Project
 
 DIRECTORY STRUCTURE:  
 ===============================================================================
@@ -16,7 +16,7 @@ DESCRIPTION:         see below
 DATE WRITTEN:        April 15, 2015  
 
  
-CNP_Protocol Project Overview
+Computer Networks Protocol(CNP) Project Overview
 ========================================================================  
 
 1. ASSIGNMENT: 5580 Computer Networks
