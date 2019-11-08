@@ -11,10 +11,6 @@ DIRECTORY STRUCTURE:
     + --- \Documentation    (implementation documentation)  
     + --- \Bin              (compiled executable)  
     + --- \Obj              (discardable binary intermediaries)
-
-DESCRIPTION:         see below  
-DATE WRITTEN:        April 15, 2015  
-
  
 Computer Networks Protocol(CNP) Project Overview
 ========================================================================  
@@ -79,20 +75,20 @@ IMPLEMENTATION
     - I provided coding examples on how to use the protocol & the ClientID 
       field:
 
-       - The Server generates it in response to a successful CONNECT_REQUEST 
-         from the Client.
+      - The Server generates it in response to a successful CONNECT_REQUEST 
+        from the Client.
 
-       - The Client then uses it from that point on in all further messages.
+      - The Client then uses it from that point on in all further messages.
 
-       - The Server, after issuing a ClientID, enters it into a local runtime 
-         table as a key that maps to each Client's session state.
+      - The Server, after issuing a ClientID, enters it into a local runtime 
+        table as a key that maps to each Client's session state.
 
-       - The Server, verifies each subsequent message received from any Client 
-         against that client's session state using the ClientID.
+      - The Server, verifies each subsequent message received from any Client 
+        against that client's session state using the ClientID.
 
-       - The ClientID is not persisted and is only valid during the actual time 
-         a Client is connected. On disconnect, the same ClientID may be 
-         re-issued to another newly connected Client.
+      - The ClientID is not persisted and is only valid during the actual time 
+        a Client is connected. On disconnect, the same ClientID may be 
+        re-issued to another newly connected Client.
 
     - I provided coding examples on how to persist customer Account and Transaction 
       tables using std::map.
@@ -487,8 +483,8 @@ RESULTS
 REFERENCE(S)
 ===============================================================================
 
-- Ramananandro, Reis, Leroy, "Formal Verification of Object Layout for C++ Multiple Inheritance", 
-  INRIA Paris-Rocquencourt, Texas A&M University, January 26, 2011, http://gallium.inria.fr/~tramanan/cxx/object-layout/slides.pdf
+- Ramananandro, Reis, Leroy, ["Formal Verification of Object Layout for C++ Multiple Inheritance"](http://gallium.inria.fr/~tramanan/cxx/object-layout/slides.pdf), 
+  INRIA Paris-Rocquencourt, Texas A&M University, January 26, 2011, 
   
 - [Abstract Syntax Notation One (via wikipedia)](https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One)
 
