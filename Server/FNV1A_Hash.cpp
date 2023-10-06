@@ -23,13 +23,13 @@ size_t FNV1A_Hash(const char* pKey, size_t cbLen) noexcept
 
     for (; cbKeyLen >= 4; cbKeyLen -= 4, pKeyLoc += 4)
     {
-        dwHash = ( ( dwHash ^ *(DWORD*) pKeyLoc ) << 5 ) - ( dwHash ^ *(DWORD*) pKeyLoc );
+        dwHash = ((dwHash ^ *reinterpret_cast<const DWORD*>(pKeyLoc) ) << 5) - (dwHash ^ *reinterpret_cast<const DWORD*>(pKeyLoc));
     }
 
     // Process the remaining bytes
     if (cbKeyLen & 2)
     {
-        dwHash = ( ( dwHash ^ *(WORD*) pKeyLoc ) << 5 ) - ( dwHash ^ *(WORD*) pKeyLoc );
+        dwHash = ( ( dwHash ^ *reinterpret_cast<const WORD*>(pKeyLoc)) << 5 ) - ( dwHash ^ *reinterpret_cast<const WORD*>(pKeyLoc));
         pKeyLoc += 2;
     }
     if (cbKeyLen & 1)
