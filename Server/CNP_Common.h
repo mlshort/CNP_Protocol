@@ -17,12 +17,12 @@
 #endif
 
 /// for error checking and data initialization
-const cnp::QWORD INVALID_CUSTOMER_ID     = 0;
+constexpr cnp::QWORD INVALID_CUSTOMER_ID     = 0;
 /// for error checking and data initialization
-const cnp::DWORD INVALID_BALANCE         = static_cast<cnp::DWORD>(~0);
+constexpr cnp::DWORD INVALID_BALANCE         = static_cast<cnp::DWORD>(~0);
 
-const cnp::WORD  g_wServerMajorVersion   = 1;
-const cnp::WORD  g_wServerMinorVersion   = 1;
+constexpr cnp::WORD  g_wServerMajorVersion   = 1;
+constexpr cnp::WORD  g_wServerMinorVersion   = 1;
 
 /// Validation helper function
 constexpr bool IsValidCustomerID(const cnp::QWORD& qwID) noexcept
@@ -33,7 +33,7 @@ constexpr bool IsValidPIN(cnp::WORD wPIN) noexcept
 { return (wPIN != cnp::INVALID_PIN); };
 
 /// Validation helper function
-inline bool IsValidName(const char* szName) noexcept
+constexpr bool IsValidName(const char* szName) noexcept
 { return (szName && szName[0]); };
 
 #endif
