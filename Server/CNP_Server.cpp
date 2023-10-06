@@ -36,14 +36,14 @@
 #include <unistd.h>
 #include <sys/syscall.h>
 
-pid_t gettid( void )
+pid_t GetThreadID( void )
 {
     return syscall( __NR_gettid );
 };
 
 #elif _MSC_VER
 
-DWORD gettid( void ) noexcept
+DWORD GetThreadID( void ) noexcept
 {
     return ::GetCurrentThreadId();
 };
@@ -85,8 +85,8 @@ private:
 
 void ClientThreadHandler(void* pData)
 {
-    THREAD_INFO*  pInfo    = reinterpret_cast<THREAD_INFO*>(pData);
-    std::cout << __FUNCTION__ << " ThreadID:" << gettid() << std::endl;
+    THREAD_INFO*  pInfo    = static_cast<THREAD_INFO*>(pData);
+    std::cout << __FUNCTION__ << " ThreadID:" << GetThreadID() << std::endl;
     bool bResult           = false;
     cnp::WORD wClientID    = cnp::INVALID_CLIENT_ID;
 
@@ -165,7 +165,7 @@ void ClientThreadHandler(void* pData)
 #endif
     }
 
-    std::cout << "Exiting ThreadID:" << gettid() << std::endl;
+    std::cout << "Exiting ThreadID:" << GetThreadID() << std::endl;
 };
 
 void TerminateHandler(int /*iSignal*/) noexcept
@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
 
 
     WORD    wVersionRequested;
-    WSADATA wsaData;
+    WSADATA wsaData{ 0 };
     int     iError;
 
     wVersionRequested = MAKEWORD(2, 2);
@@ -266,7 +266,7 @@ int main(int argc, char *argv[])
 
     SvrSocket.SetBlocking(false);
 
-    SOCKET      hNewSocket;
+    SOCKET      hNewSocket = INVALID_SOCKET;
     sockaddr_in remoteAddr;
 
     while (g_bTerminate == false)
