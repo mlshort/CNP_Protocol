@@ -30,11 +30,11 @@ std::mutex                                  g_TransactionMutex;
 
 #ifdef __linux__
 
-pid_t gettid( void );
+pid_t GetThreadID( void );
 
 #elif _MSC_VER
 
-DWORD gettid( void );
+DWORD GetThreadID( void );
 
 #endif
 
@@ -115,12 +115,12 @@ struct SERVER_RESPONSE
 
 cnp::WORD ProcessConnectRequest(const void* pMsg, size_t cbMsgLen, CNP_Socket* pSocket)
 {
-    const cnp::CONNECT_REQUEST* pReqMsg = reinterpret_cast<const cnp::CONNECT_REQUEST*>( pMsg );
+    const cnp::CONNECT_REQUEST* pReqMsg = static_cast<const cnp::CONNECT_REQUEST*>( pMsg );
 
     cnp::CER_TYPE cerRR    = cnp::CER_ERROR;
     cnp::WORD wNewClientID = cnp::INVALID_CLIENT_ID;
 
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client: NA  " << __FUNCTION__ 
               << " MsgLen:" << cbMsgLen << std::endl;
 
@@ -179,13 +179,13 @@ cnp::WORD ProcessConnectRequest(const void* pMsg, size_t cbMsgLen, CNP_Socket* p
 
 bool ProcessCreateAccountRequest(const void* pMsg, size_t cbMsgLen)
 {
-    const cnp::CREATE_ACCOUNT_REQUEST* pReqMsg = reinterpret_cast<const cnp::CREATE_ACCOUNT_REQUEST*>( pMsg );   
+    const cnp::CREATE_ACCOUNT_REQUEST* pReqMsg = static_cast<const cnp::CREATE_ACCOUNT_REQUEST*>( pMsg );   
 
     cnp::CER_TYPE cerRR = cnp::CER_ERROR;
     cnp::WORD wClientID = pReqMsg->get_ClientID();
     CNP_Socket* pSocket = nullptr;
     
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client:" << std::setw(4) << wClientID << " " << __FUNCTION__ 
               << " MsgLen:" << cbMsgLen << std::endl;
 // 1. Validate the connection
@@ -251,13 +251,13 @@ bool ProcessCreateAccountRequest(const void* pMsg, size_t cbMsgLen)
 
 bool ProcessLogonRequest(const void* pMsg, size_t cbMsgLen)
 {
-    const cnp::LOGON_REQUEST* pReqMsg = reinterpret_cast<const cnp::LOGON_REQUEST*>( pMsg );    
+    const cnp::LOGON_REQUEST* pReqMsg = static_cast<const cnp::LOGON_REQUEST*>( pMsg );    
     
     cnp::CER_TYPE cerRR = cnp::CER_ERROR;
     cnp::WORD wClientID = pReqMsg->get_ClientID();
     CNP_Socket* pSocket = nullptr;
 
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client:" << std::setw(4) << wClientID << " " << __FUNCTION__ 
               << " MsgLen:" << cbMsgLen << std::endl;
 // 1. Validate the connection
@@ -316,13 +316,13 @@ bool ProcessLogonRequest(const void* pMsg, size_t cbMsgLen)
 
 bool ProcessLogoffRequest(const void* pMsg, size_t cbMsgLen)
 {
-    const cnp::LOGOFF_REQUEST* pReqMsg = reinterpret_cast<const cnp::LOGOFF_REQUEST*>( pMsg );    
+    const cnp::LOGOFF_REQUEST* pReqMsg = static_cast<const cnp::LOGOFF_REQUEST*>( pMsg );    
     
     cnp::CER_TYPE cerRR = cnp::CER_ERROR;
     cnp::WORD wClientID = pReqMsg->get_ClientID();
     CNP_Socket* pSocket = nullptr;
 
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client:" << std::setw(4) << wClientID << " " << __FUNCTION__ 
               << " MsgLen:" << cbMsgLen << std::endl;
 // 1. Validate the connection
@@ -368,13 +368,13 @@ bool ProcessLogoffRequest(const void* pMsg, size_t cbMsgLen)
 
 bool ProcessDepositRequest(const void* pMsg, size_t cbMsgLen)
 {
-    const cnp::DEPOSIT_REQUEST* pReqMsg = reinterpret_cast<const cnp::DEPOSIT_REQUEST*>( pMsg );
+    const cnp::DEPOSIT_REQUEST* pReqMsg = static_cast<const cnp::DEPOSIT_REQUEST*>( pMsg );
     
     cnp::CER_TYPE cerRR = cnp::CER_ERROR;
     cnp::WORD wClientID = pReqMsg->get_ClientID();
     CNP_Socket* pSocket = nullptr;
 
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client:" << std::setw(4) << wClientID << " " << __FUNCTION__ 
               << " MsgLen:" << cbMsgLen << std::endl;
 
@@ -443,13 +443,13 @@ bool ProcessDepositRequest(const void* pMsg, size_t cbMsgLen)
 
 bool ProcessWithdrawalRequest(const void* pMsg, size_t cbMsgLen)
 {
-    const cnp::WITHDRAWAL_REQUEST* pReqMsg = reinterpret_cast<const cnp::WITHDRAWAL_REQUEST*>( pMsg );
+    const cnp::WITHDRAWAL_REQUEST* pReqMsg = static_cast<const cnp::WITHDRAWAL_REQUEST*>( pMsg );
     
     cnp::CER_TYPE cerRR = cnp::CER_ERROR;
     cnp::WORD wClientID = pReqMsg->get_ClientID();
     CNP_Socket* pSocket = nullptr;
 
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client:" << std::setw(4) << wClientID << " " << __FUNCTION__ 
               << " MsgLen:" << cbMsgLen << std::endl;
 // 1. Validate the connection
@@ -528,14 +528,14 @@ bool ProcessWithdrawalRequest(const void* pMsg, size_t cbMsgLen)
 
 bool ProcessBalanceQueryRequest(const void* pMsg, size_t cbMsgLen)
 {
-    const cnp::BALANCE_QUERY_REQUEST* pReqMsg = reinterpret_cast<const cnp::BALANCE_QUERY_REQUEST*>( pMsg );
+    const cnp::BALANCE_QUERY_REQUEST* pReqMsg = static_cast<const cnp::BALANCE_QUERY_REQUEST*>( pMsg );
     
     cnp::CER_TYPE cerRR  = cnp::CER_ERROR;
     cnp::DWORD dwBalance = INVALID_BALANCE;
     cnp::WORD  wClientID = pReqMsg->get_ClientID();
     CNP_Socket* pSocket  = nullptr;
 
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client:" << std::setw(4) << wClientID << " " << __FUNCTION__ 
               << " MsgLen:" << cbMsgLen << std::endl;
 // 1. Validate the connection
@@ -587,7 +587,7 @@ bool ProcessBalanceQueryRequest(const void* pMsg, size_t cbMsgLen)
 
 bool ProcessTransactionQueryRequest(const void* pMsg, size_t cbMsgLen)
 {
-    const cnp::TRANSACTION_QUERY_REQUEST* pReqMsg = reinterpret_cast<const cnp::TRANSACTION_QUERY_REQUEST*>( pMsg );
+    const cnp::TRANSACTION_QUERY_REQUEST* pReqMsg = static_cast<const cnp::TRANSACTION_QUERY_REQUEST*>( pMsg );
     
     cnp::CER_TYPE cerRR   = cnp::CER_ERROR;
     cnp::WORD wClientID   = pReqMsg->get_ClientID();
@@ -595,7 +595,7 @@ bool ProcessTransactionQueryRequest(const void* pMsg, size_t cbMsgLen)
     std::vector<cnp::TRANSACTION> vecTransactions;
     CNP_Socket* pSocket = nullptr;
 
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client:" << std::setw(4) << wClientID << " " << __FUNCTION__ 
               << " MsgLen:" << cbMsgLen << std::endl;
 // 1. Validate the connection
@@ -681,12 +681,12 @@ bool ProcessTransactionQueryRequest(const void* pMsg, size_t cbMsgLen)
 
 bool ProcessStampPurchaseRequest(const void* pMsg, size_t cbMsgLen)
 {
-    const cnp::STAMP_PURCHASE_REQUEST* pReqMsg = reinterpret_cast<const cnp::STAMP_PURCHASE_REQUEST*>( pMsg );
+    const cnp::STAMP_PURCHASE_REQUEST* pReqMsg = static_cast<const cnp::STAMP_PURCHASE_REQUEST*>( pMsg );
     cnp::CER_TYPE cerRR = cnp::CER_ERROR;
     cnp::WORD wClientID = pReqMsg->get_ClientID();
     CNP_Socket* pSocket = nullptr;
 
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client:" << std::setw(4) << wClientID << " " << __FUNCTION__ 
               << " MsgLen:" << cbMsgLen << std::endl;
 // 1. Validate the connection
@@ -765,7 +765,7 @@ bool ProcessStampPurchaseRequest(const void* pMsg, size_t cbMsgLen)
 
 bool ProcessDisconnect(cnp::WORD wClientID)
 {
-    std::cout << "[" << std::setw(5) << gettid() 
+    std::cout << "[" << std::setw(5) << GetThreadID() 
               << "] Client:" << std::setw(4) << wClientID << " " << __FUNCTION__ 
               << std::endl;
     bool bResult = false;
