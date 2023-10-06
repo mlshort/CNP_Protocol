@@ -29,30 +29,30 @@
 struct ACCOUNT_INFO : 
     public cnp::prim::_CREATE_ACCOUNT_REQUEST
 {
-    typedef cnp::QWORD key_type;
-    typedef cnp::prim::_CREATE_ACCOUNT_REQUEST _Base;
+    using key_type = cnp::QWORD;
+    using _Base    = cnp::prim::_CREATE_ACCOUNT_REQUEST;
 
     cnp::QWORD  m_qwCustomerID;
     cnp::DWORD  m_dwBalance;
 
     /// Default Constructor
-    ACCOUNT_INFO()
+    constexpr ACCOUNT_INFO() noexcept
         : _Base(),
           m_qwCustomerID(INVALID_CUSTOMER_ID),
           m_dwBalance   (INVALID_BALANCE)
     { };
 
     /// Initialization Constructor
-    ACCOUNT_INFO(const _Base& base,
+    constexpr ACCOUNT_INFO(const _Base& base,
                  const cnp::QWORD& qwID = INVALID_CUSTOMER_ID,
-                 cnp::DWORD dwBalance = INVALID_BALANCE)
+                 cnp::DWORD dwBalance = INVALID_BALANCE) noexcept
         : _Base(base),
           m_qwCustomerID(qwID),
           m_dwBalance   (dwBalance)
     { };
 
     /// Copy Constructor
-    ACCOUNT_INFO(const ACCOUNT_INFO& rhs)
+    constexpr ACCOUNT_INFO(const ACCOUNT_INFO& rhs) noexcept
         : _Base(rhs),
           m_qwCustomerID(rhs.m_qwCustomerID),
           m_dwBalance   (rhs.m_dwBalance)
@@ -92,12 +92,12 @@ struct ACCOUNT_INFO :
 struct TRANSACTION_INFO : 
     public cnp::TRANSACTION
 {
-    typedef cnp::DWORD key_type;
+    using key_type = cnp::DWORD;
 
     cnp::QWORD  m_qwCustomerID;
 
     /// Default Constructor
-    TRANSACTION_INFO(void)
+    constexpr TRANSACTION_INFO(void) noexcept
         : cnp::TRANSACTION(),
           m_qwCustomerID(INVALID_CUSTOMER_ID)
     { };
@@ -111,19 +111,17 @@ struct TRANSACTION_INFO :
   @param [in] wType         The transaction type, represented as cnp::TT_DEPOSIT or cnp::TT_WITHDRAWAL
   @param [in] qwCustomerID  Unique customer ID associated with the transaction
 */
-    TRANSACTION_INFO(cnp::DWORD         dwID,        
-                     const cnp::QWORD&  qwDateTime,  
-                     cnp::DWORD         dwAmount,    
-                     cnp::WORD          wType,       
-                     const cnp::QWORD&  qwCustomerID)
-         : m_qwCustomerID(qwCustomerID)
-    { m_dwID = dwID;
-      m_qwDateTime = qwDateTime;
-      m_dwAmount = dwAmount;
-      m_wType = wType; };
+    constexpr TRANSACTION_INFO(cnp::DWORD         dwID,        
+                               const cnp::QWORD&  qwDateTime,  
+                               cnp::DWORD         dwAmount,    
+                               cnp::WORD          wType,       
+                               const cnp::QWORD&  qwCustomerID) noexcept
+         : cnp::TRANSACTION(dwID, qwDateTime, dwAmount, wType),
+           m_qwCustomerID(qwCustomerID)
+    { };
 
     /// Copy Constructor
-    TRANSACTION_INFO(const TRANSACTION_INFO& rhs)
+    constexpr TRANSACTION_INFO(const TRANSACTION_INFO& rhs) noexcept
         : cnp::TRANSACTION(rhs),
           m_qwCustomerID(rhs.m_qwCustomerID)
     { };
