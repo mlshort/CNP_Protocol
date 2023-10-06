@@ -1,6 +1,6 @@
 # Compiler and Linker
 CXX = \
-  g++-4.8
+  g++
   
 # The Target Binary Program
 TARGET_NAME = \
@@ -8,7 +8,7 @@ TARGET_NAME = \
   
 # Extra flags to give to the C++ compiler.
 CXXFLAGS = \
-  -Wall -I$(INCLUDE_DIR) -std=c++11
+  -Wall -I$(INCLUDE_DIR) -std=c++17
 
 # Include directory
 INCLUDE_DIR = \
@@ -16,7 +16,7 @@ INCLUDE_DIR = \
 
 # Intermediate object directory
 OBJ_DIR = \
-  ../Obj
+  ../Obj/Server
 
 DEPENDS_DIR = \
   ../Obj
