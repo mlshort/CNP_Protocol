@@ -43,7 +43,7 @@ enum SESSION_STATE
  */
 struct SESSION_INFO
 {
-    typedef cnp::WORD key_type;
+    using key_type = cnp::WORD;
 
     cnp::WORD     m_wClientID; ///< Key field
     cnp::WORD     m_wState;
@@ -51,7 +51,7 @@ struct SESSION_INFO
     cnp::QWORD    m_qwCustomerID;
 
     /// Initialization Constructor
-    SESSION_INFO(cnp::WORD wClientID, SESSION_STATE sState, CNP_Socket* pSocket = nullptr)
+    constexpr SESSION_INFO(cnp::WORD wClientID, SESSION_STATE sState, CNP_Socket* pSocket = nullptr) noexcept
         : m_wClientID   (wClientID),
           m_wState      (static_cast<cnp::WORD>(sState)),
           m_pSocket     (pSocket),
