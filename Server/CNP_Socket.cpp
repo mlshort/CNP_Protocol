@@ -30,8 +30,9 @@
     #include <unistd.h>
     #include <sys/time.h>
     #include <sys/fcntl.h>
+    #include <cerrno>
 
-    inline int CNP_GetLastError(void)
+    inline int CNP_GetLastError(void) noexcept
     { return errno; };
 
 #endif
@@ -71,7 +72,7 @@ CNP_Socket::~CNP_Socket(void)
     Close();
 };
 
-bool CNP_Socket::SetBlocking(bool bBlocking /* = true */)
+bool CNP_Socket::SetBlocking(bool bBlocking /* = true */) noexcept
 {
     bool bResult = false;
     
@@ -89,7 +90,7 @@ bool CNP_Socket::SetBlocking(bool bBlocking /* = true */)
         int iResult = ::ioctlsocket(m_hSocket, FIONBIO, &nMode);
 
         if (iResult != NO_ERROR)
-            std::cerr << "ioctlsocket failed with error:" << iResult << std::endl;
+            fprintf(stderr, "ioctlsocket failed with Error: %i \n", iResult);
         else
             bResult = true;
 #endif
@@ -99,7 +100,7 @@ bool CNP_Socket::SetBlocking(bool bBlocking /* = true */)
 }
 
 
-bool CNP_Socket::Create(unsigned short wPort)
+bool CNP_Socket::Create(unsigned short wPort) noexcept
 {
     bool bResult = false;
     m_hSocket = ::socket(AF_INET, SOCK_STREAM, 0);
@@ -112,7 +113,7 @@ bool CNP_Socket::Create(unsigned short wPort)
         m_LocalAddr.sin_family      = AF_INET;
         m_LocalAddr.sin_port        = ::htons(wPort);
         m_LocalAddr.sin_addr.s_addr = INADDR_ANY;
-        if (::bind(m_hSocket,(struct sockaddr *) &m_LocalAddr, sizeof(m_LocalAddr)) != SOCKET_ERROR)
+        if (::bind(m_hSocket, reinterpret_cast<struct sockaddr *>( &m_LocalAddr), sizeof(m_LocalAddr)) != SOCKET_ERROR)
         {
             m_wPort = wPort;
             bResult = true;
@@ -120,19 +121,19 @@ bool CNP_Socket::Create(unsigned short wPort)
         else
         {
             m_iError = CNP_GetLastError(); //errno;
-            std::cerr << "Failure to bind to port:" << wPort << std::endl;
+            fprintf(stderr, "Failure to bind to port: %hu Error: %i \n", wPort, m_iError);
         }
     }
     else
     {
         m_iError = CNP_GetLastError(); //errno;
-        std::cerr << "Failure to create socket" << std::endl;
+        fprintf(stderr, "Failure to create socket with Error: %i \n", m_iError);
     }
 
     return bResult;
 };
 
-bool CNP_Socket::Connect(const char* szHostAddress, unsigned short wPort )
+bool CNP_Socket::Connect(const char* szHostAddress, unsigned short wPort ) noexcept
 {
     if (m_hSocket == INVALID_SOCKET)
     {
@@ -148,15 +149,19 @@ bool CNP_Socket::Connect(const char* szHostAddress, unsigned short wPort )
     memset(&m_RemoteAddr,0,sizeof(m_RemoteAddr));
 
     m_RemoteAddr.sin_family      = AF_INET;
-//    m_RemoteAddr.sin_addr.s_addr = ::inet_pton(szHostAddress, ); //::inet_addr(szHostAddress);
 
+#ifdef __linux__
+    if (::inet_pton(AF_INET, szHostAddress, &m_RemoteAddr.sin_addr.s_addr) <= 0)
+#else
     if (!::InetPtonA(AF_INET, szHostAddress, &m_RemoteAddr.sin_addr.s_addr))
+#endif
         return false;
+
 
     m_RemoteAddr.sin_port        = ::htons(wPort);
 
     // connects to peer
-    if (SOCKET_ERROR == ::connect(m_hSocket, (struct sockaddr *)&m_RemoteAddr, sizeof(m_RemoteAddr)))
+    if (SOCKET_ERROR == ::connect(m_hSocket, reinterpret_cast<struct sockaddr *>(&m_RemoteAddr), sizeof(m_RemoteAddr)))
     {
         m_iError = CNP_GetLastError(); //errno;
         return false;
@@ -165,7 +170,7 @@ bool CNP_Socket::Connect(const char* szHostAddress, unsigned short wPort )
     return true;
 }
 
-bool CNP_Socket::Listen(int iBackLog)
+bool CNP_Socket::Listen(int iBackLog) noexcept
 {
     bool bResult = false;
     if (m_hSocket != INVALID_SOCKET)
@@ -188,16 +193,16 @@ void CNP_Socket::Close(void) noexcept
     }
 };
 
-bool CNP_Socket::Accept(SOCKET& hSocket, sockaddr_in& remoteAddr)
+bool CNP_Socket::Accept(SOCKET& hSocket, sockaddr_in& remoteAddr) noexcept
 {
     bool bResult = false;
 #ifdef __linux__
-    size_t sin_size = sizeof(struct sockaddr_in);
+    socklen_t sin_size = sizeof(struct sockaddr_in);
 #elif _MSC_VER
     int sin_size = sizeof(struct sockaddr_in);
 #endif
 
-    hSocket  = ::accept(m_hSocket, ( struct sockaddr * )&remoteAddr, &sin_size);
+    hSocket  = ::accept(m_hSocket, reinterpret_cast< struct sockaddr * >(&remoteAddr), &sin_size);
     if (hSocket != INVALID_SOCKET)
     {
         bResult = true;
@@ -210,7 +215,7 @@ bool CNP_Socket::Accept(SOCKET& hSocket, sockaddr_in& remoteAddr)
     return bResult;
 };
 
-int CNP_Socket::Receive(void* pData, size_t cbLen, int iFlags /* = 0 */)
+int CNP_Socket::Receive(void* pData, size_t cbLen, int iFlags /* = 0 */) noexcept
 {
     int nResult = ::recv (m_hSocket, static_cast<char*>(pData), cbLen, iFlags);
     m_iError    = CNP_GetLastError(); //errno;
@@ -220,14 +225,14 @@ int CNP_Socket::Receive(void* pData, size_t cbLen, int iFlags /* = 0 */)
     return nResult == -1 ? SOCKET_ERROR : nResult;
 };
 
-int CNP_Socket::Send(const void* pData, size_t cbLen, int iFlags /* = 0 */)
+int CNP_Socket::Send(const void* pData, size_t cbLen, int iFlags /* = 0 */) noexcept
 {
     int nResult = ::send(m_hSocket, static_cast<const char*>(pData), cbLen, iFlags);
     m_iError    = CNP_GetLastError(); //errno;
     return nResult == -1 ? SOCKET_ERROR : nResult;
 };
 
-int CNP_Socket::SetSocketOption(int iLevel, int iOption, const void* pVal, size_t cbLen)
+int CNP_Socket::SetSocketOption(int iLevel, int iOption, const void* pVal, size_t cbLen) noexcept
 {
 #ifdef __linux__
     int nResult = ::setsockopt (m_hSocket, iLevel, iOption, pVal, cbLen);
@@ -240,7 +245,7 @@ int CNP_Socket::SetSocketOption(int iLevel, int iOption, const void* pVal, size_
 
 #ifdef __linux__
 
-int CNP_Socket::SetSocketRecvTimeout(unsigned int uSecs, unsigned int uMicroSecs)
+int CNP_Socket::SetSocketRecvTimeout(unsigned int uSecs, unsigned int uMicroSecs) noexcept
 {
     struct timeval tv;
 
@@ -250,7 +255,7 @@ int CNP_Socket::SetSocketRecvTimeout(unsigned int uSecs, unsigned int uMicroSecs
     return SetSocketOption( SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv) );
 };
 
-int CNP_Socket::SetSocketSendTimeout(unsigned int uSecs, unsigned int uMicroSecs)
+int CNP_Socket::SetSocketSendTimeout(unsigned int uSecs, unsigned int uMicroSecs) noexcept
 {
     struct timeval tv;
 
@@ -262,14 +267,14 @@ int CNP_Socket::SetSocketSendTimeout(unsigned int uSecs, unsigned int uMicroSecs
 
 #elif _MSC_VER
 
-int CNP_Socket::SetSocketRecvTimeout(unsigned long ulMilliSecs)
+int CNP_Socket::SetSocketRecvTimeout(unsigned long ulMilliSecs) noexcept
 {
     DWORD dwMS = ulMilliSecs;
 
     return SetSocketOption( SOL_SOCKET, SO_RCVTIMEO, &dwMS, sizeof(dwMS) );
 };
 
-int CNP_Socket::SetSocketSendTimeout(unsigned long ulMilliSecs)
+int CNP_Socket::SetSocketSendTimeout(unsigned long ulMilliSecs) noexcept
 {
     DWORD dwMS = ulMilliSecs;
 

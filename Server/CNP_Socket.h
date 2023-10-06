@@ -62,8 +62,8 @@ public:
 
     void Close(void) noexcept;
 
-    bool Create (unsigned short wPort);
-    bool Connect(const char* szHostAddress, unsigned short wPort);
+    bool Create (unsigned short wPort) noexcept;
+    bool Connect(const char* szHostAddress, unsigned short wPort) noexcept;
 /**
     places the underlying socket in a state in which it is listening for an incoming connection
 
@@ -74,9 +74,9 @@ public:
     @retval true  on success
     @retval false on failure
  */
-    bool Listen (int iBackLog);
+    bool Listen (int iBackLog) noexcept;
 
-    bool Accept (SOCKET& hSocket, sockaddr_in& remoteAddr);
+    bool Accept (SOCKET& hSocket, sockaddr_in& remoteAddr) noexcept;
 
 /**
     @brief Receives data from the underlying connected socket or a bound connectionless socket
@@ -91,8 +91,8 @@ public:
     @retval SOCKET_ERROR    on failure  call GetError() to retrieve the specific error code
 
  */
-    int  Receive(void* pData, size_t cbLen, int iFlags = 0);
-    int  Send   (const void* pData, size_t cbLen, int iFlags = 0);
+    int  Receive(void* pData, size_t cbLen, int iFlags = 0) noexcept;
+    int  Send   (const void* pData, size_t cbLen, int iFlags = 0) noexcept;
 /**
    @brief Sets the underlying socket option
 
@@ -107,16 +107,16 @@ public:
    @retval SOCKET_ERROR on failure  call GetError() to retrieve the specific error code
 */
 
-    int  SetSocketOption(int iLevel, int iOption, const void* pVal, size_t cbLen);
+    int  SetSocketOption(int iLevel, int iOption, const void* pVal, size_t cbLen) noexcept;
 
-    bool SetBlocking    (bool bBlocking = true);
+    bool SetBlocking    (bool bBlocking = true) noexcept;
 
 #ifdef __linux__
-    int  SetSocketRecvTimeout(unsigned int uSecs, unsigned int uMicroSecs);
-    int  SetSocketSendTimeout(unsigned int uSecs, unsigned int uMicroSecs);
+    int  SetSocketRecvTimeout(unsigned int uSecs, unsigned int uMicroSecs) noexcept;
+    int  SetSocketSendTimeout(unsigned int uSecs, unsigned int uMicroSecs) noexcept;
 #elif _MSC_VER
-    int  SetSocketRecvTimeout(unsigned long ulMilliSecs);
-    int  SetSocketSendTimeout(unsigned long ulMilliSecs);
+    int  SetSocketRecvTimeout(unsigned long ulMilliSecs) noexcept;
+    int  SetSocketSendTimeout(unsigned long ulMilliSecs) noexcept;
 #endif
  /**
     @brief disables sends or receives on underlying socket
