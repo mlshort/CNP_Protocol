@@ -88,10 +88,9 @@ const char* TransTypeToString(cnp::TRANSACTION_TYPE tType) noexcept
 
 std::string& RawTimeToLocalTimeString(time_t tRawTime, std::string& strLocalTime)
 {
-    struct tm* pLocalTime;
     char szBuffer[80] = { 0 };
 
-    pLocalTime = localtime(&tRawTime);
+    struct tm* pLocalTime = localtime(&tRawTime);
 
     strftime(szBuffer, COUNTOF(szBuffer) - 1, "%d %b %y %H:%M:%S", pLocalTime);
     strLocalTime = szBuffer;
@@ -124,7 +123,7 @@ cnp::CER_TYPE SendConnect(CNP_Socket& socket, cnp::WORD& wClientID)
     socket.Send(&conReq, conReq.get_Size());
     socket.Receive(g_szBuffer, sizeof(g_szBuffer) - 1);
 
-    cnp::CONNECT_RESPONSE* pResp = reinterpret_cast<cnp::CONNECT_RESPONSE*>( g_szBuffer );
+    const cnp::CONNECT_RESPONSE* pResp = reinterpret_cast<cnp::CONNECT_RESPONSE*>( g_szBuffer );
     cerResult = static_cast<cnp::CER_TYPE>(pResp->get_ResponseResult());
 
     if (cerResult == cnp::CER_SUCCESS)
@@ -166,7 +165,7 @@ cnp::CER_TYPE SendCreateAccount(CNP_Socket& socket, cnp::WORD wClientID)
     socket.Send(&acctReq, acctReq.get_Size());
     socket.Receive(g_szBuffer, sizeof(g_szBuffer) - 1);
 
-    cnp::CREATE_ACCOUNT_RESPONSE* pResp = reinterpret_cast<cnp::CREATE_ACCOUNT_RESPONSE*>( g_szBuffer );
+    const cnp::CREATE_ACCOUNT_RESPONSE* pResp = reinterpret_cast<cnp::CREATE_ACCOUNT_RESPONSE*>( g_szBuffer );
     cerResult = static_cast<cnp::CER_TYPE>(pResp->get_ResponseResult());
 
     std::cout << "..." << __FUNCTION__ << " Result:" << CerTypeToString(cerResult) << std::endl;
@@ -193,7 +192,7 @@ cnp::CER_TYPE SendLogIn(CNP_Socket& socket, cnp::WORD wClientID)
     socket.Send(&logReq, logReq.get_Size());
     socket.Receive(g_szBuffer, sizeof(g_szBuffer) - 1);
 
-    cnp::LOGON_RESPONSE* pResp = reinterpret_cast<cnp::LOGON_RESPONSE*>( g_szBuffer );
+    const cnp::LOGON_RESPONSE* pResp = reinterpret_cast<cnp::LOGON_RESPONSE*>( g_szBuffer );
     cerResult = static_cast<cnp::CER_TYPE>(pResp->get_ResponseResult());
 
     std::cout << "..." << __FUNCTION__ << " Result:" << CerTypeToString(cerResult) << std::endl;
@@ -211,7 +210,7 @@ cnp::CER_TYPE SendLogOut(CNP_Socket& socket, cnp::WORD wClientID)
     socket.Send(&loReq, loReq.get_Size());
     socket.Receive(g_szBuffer, sizeof(g_szBuffer) - 1);
     
-    cnp::LOGOFF_RESPONSE* pResp = reinterpret_cast<cnp::LOGOFF_RESPONSE*>( g_szBuffer );
+    const cnp::LOGOFF_RESPONSE* pResp = reinterpret_cast<cnp::LOGOFF_RESPONSE*>( g_szBuffer );
     cerResult = static_cast<cnp::CER_TYPE>(pResp->get_ResponseResult());
 
     std::cout << "..." << __FUNCTION__ << " Result:" << CerTypeToString(cerResult) << std::endl;
@@ -234,7 +233,7 @@ cnp::CER_TYPE SendDeposit(CNP_Socket& socket, cnp::WORD wClientID)
     socket.Send(&depReq, depReq.get_Size());
     socket.Receive(g_szBuffer, sizeof(g_szBuffer) - 1);
 
-    cnp::DEPOSIT_RESPONSE* pResp = reinterpret_cast<cnp::DEPOSIT_RESPONSE*>( g_szBuffer );
+    const cnp::DEPOSIT_RESPONSE* pResp = reinterpret_cast<cnp::DEPOSIT_RESPONSE*>( g_szBuffer );
     cerResult = static_cast<cnp::CER_TYPE>(pResp->get_ResponseResult());
 
     std::cout << "..." << __FUNCTION__ << " Result:" << CerTypeToString(cerResult) << std::endl;
@@ -257,7 +256,7 @@ cnp::CER_TYPE SendWithdrawal(CNP_Socket& socket, cnp::WORD wClientID)
     socket.Send(&withReq, withReq.get_Size());
     socket.Receive(g_szBuffer, sizeof(g_szBuffer) - 1);
 
-    cnp::WITHDRAWAL_RESPONSE* pResp = reinterpret_cast<cnp::WITHDRAWAL_RESPONSE*>( g_szBuffer );
+    const cnp::WITHDRAWAL_RESPONSE* pResp = reinterpret_cast<cnp::WITHDRAWAL_RESPONSE*>( g_szBuffer );
     cerResult = static_cast<cnp::CER_TYPE>(pResp->get_ResponseResult());
 
     std::cout << "..." << __FUNCTION__ << " Result:" << CerTypeToString(cerResult) << std::endl;
@@ -275,7 +274,7 @@ cnp::CER_TYPE SendBalance(CNP_Socket& socket, cnp::WORD wClientID)
     socket.Send(&balReq, balReq.get_Size());
     socket.Receive(g_szBuffer, sizeof(g_szBuffer) - 1);
     
-    cnp::BALANCE_QUERY_RESPONSE* pResp = reinterpret_cast<cnp::BALANCE_QUERY_RESPONSE*>( g_szBuffer );
+    const cnp::BALANCE_QUERY_RESPONSE* pResp = reinterpret_cast<cnp::BALANCE_QUERY_RESPONSE*>( g_szBuffer );
     cerResult = static_cast<cnp::CER_TYPE>(pResp->get_ResponseResult());
 
     std::cout << "..." << __FUNCTION__ << " Result:" << CerTypeToString(cerResult) << std::endl;
@@ -304,7 +303,7 @@ cnp::CER_TYPE SendTransaction(CNP_Socket& socket, cnp::WORD wClientID)
         socket.Send(&transReq, transReq.get_Size());
         socket.Receive(g_szBuffer, sizeof(g_szBuffer) - 1);
 
-        cnp::TRANSACTION_QUERY_RESPONSE* pResp = reinterpret_cast<cnp::TRANSACTION_QUERY_RESPONSE*>( g_szBuffer );
+        const cnp::TRANSACTION_QUERY_RESPONSE* pResp = reinterpret_cast<cnp::TRANSACTION_QUERY_RESPONSE*>( g_szBuffer );
         cerResult = static_cast<cnp::CER_TYPE>( pResp->get_ResponseResult() );
 
         std::cout << "..." << __FUNCTION__ << " Result:" << CerTypeToString(cerResult) << std::endl;
@@ -350,7 +349,7 @@ cnp::CER_TYPE SendStampPurchase(CNP_Socket& socket, cnp::WORD wClientID)
     socket.Send(&stpReq, stpReq.get_Size());
     socket.Receive(g_szBuffer, sizeof(g_szBuffer) - 1);
 
-    cnp::STAMP_PURCHASE_RESPONSE* pResp = reinterpret_cast<cnp::STAMP_PURCHASE_RESPONSE*>( g_szBuffer );
+    const cnp::STAMP_PURCHASE_RESPONSE* pResp = reinterpret_cast<cnp::STAMP_PURCHASE_RESPONSE*>( g_szBuffer );
     cerResult = static_cast<cnp::CER_TYPE>(pResp->get_ResponseResult());
 
     std::cout << "..." << __FUNCTION__ << " Result:" << CerTypeToString(cerResult) << std::endl;
